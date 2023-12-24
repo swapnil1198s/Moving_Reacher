@@ -13,7 +13,7 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
             "rgb_array",
             "depth_array"
         ],
-        "render_fps": 10,
+        "render_fps": 20,
     }
 
     def __init__(self, render_mode, size = 5):
@@ -65,7 +65,7 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         self.vel0 = 0 # Angular velocity of arm 1
         self.vel1 = 0 # Angular velocity of arm 2
 
-        self.target_position = (9, self.window_size/2 - 50) #Start from the left of the screen moving horizontally along a sinusoidal path 
+        self.target_position = (0, self.window_size/2 - 50) #Start from the left of the screen moving horizontally along a sinusoidal path 
 
         self.base_vel = 5 #Speed at which the base is moving horizontally
 
@@ -100,7 +100,7 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         x_position = self.target_position[0] + self.target_x_speed
 
         # Update the target's y-coordinate based on a sinusoidal curve
-        y_position = self.target_position[1]-(self.target_amplitude * np.sin(self.target_frequency * self.time_step))
+        y_position = self.window_size/2-(self.target_amplitude * np.sin(self.target_frequency * self.time_step))
 
         # Update the target position
         self.target_position = (x_position, y_position)
@@ -119,15 +119,15 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         self.vel1 = 0 # Angular velocity of arm 2 
         #TODO: Need to make this random value within area of circle formed by radius =  2 x size
         self.fingertip_position = (0.5, 0.5)
-        self.target_position = (9, self.window_size/2 - 50) #Start from the left of the screen moving horizontally along a sinusoidal path 
+        self.target_position = (0, self.window_size/2 - 50) #Start from the left of the screen moving horizontally along a sinusoidal path 
 
         self.base_vel = 5 #Speed at which the base is moving horizontally
 
         self.target_x_speed = 5 #speed of target along the x axis
 
         # Parameters for the sinusoidal movement of the target
-        self.target_amplitude = 20  # Amplitude of the sinusoidal curve
-        self.target_frequency = 1    # Frequency of the sinusoidal curve
+        self.target_amplitude = 100  # Amplitude of the sinusoidal curve
+        self.target_frequency = 0.1    # Frequency of the sinusoidal curve
         self.time_step = 0           # Time step counter
 
         observation = self.__get_obs()
