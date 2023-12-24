@@ -16,7 +16,7 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         "render_fps": 20,
     }
 
-    def __init__(self, render_mode, size = 5):
+    def __init__(self, render_mode, size = 50):
         self.window_size = 800 
         
         # We are concerned about the arm pose, target position, and the distance between the tip and target positions
@@ -58,6 +58,8 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         self.clock = None
 
         self.size = size #Length of both arms of the reacher. One cylinder from base(joint0) to joint1 and the second cylinder from joint1 to fingertip
+        self.arm_length1 = size  # Length of the first arm segment
+        self.arm_length2 = size  # Length of the second arm segment
         self.base_position = (0,self.window_size/2) #Starts from the left side of the screen
         self.fingertip_position = (0,0)
         self.joint0 = np.pi/2 #Joint0 angle
@@ -108,13 +110,24 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         # Increment the time step
         self.time_step += 1
 
+    def _calculate_arm_positions(self):
+        # Calculate the position of the first joint
+        joint1_x = self.base_position[0] + self.arm_length1 * np.cos(self.joint0)
+        joint1_y = self.base_position[1] + self.arm_length1 * np.sin(self.joint0)
+
+        # Calculate the position of the fingertip
+        fingertip_x = joint1_x + self.arm_length2 * np.cos(self.joint1)
+        fingertip_y = joint1_y + self.arm_length2 * np.sin(self.joint1)
+
+        return (joint1_x, joint1_y), (fingertip_x, fingertip_y)
+    
     # This is called at initialization and at close. According to the OpenAI documentation, we can assume reset is called before step is called. 
     def reset(self):
 
         self.base_position = (0,self.window_size/2) #Starts from the left side of the screen
         self.fingertip_position = (0,0)
         self.joint0 = np.pi/2 #Joint0 angle
-        self.joint1 = np.pi/2 #Joint1 angle
+        self.joint1 = np.pi/3 #Joint1 angle
         self.vel0 = 0 # Angular velocity of arm 1
         self.vel1 = 0 # Angular velocity of arm 2 
         #TODO: Need to make this random value within area of circle formed by radius =  2 x size
@@ -138,6 +151,22 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
     #TODO: Implement method to return observation, info, terminated, truncated, and reward
     def step(self, action):
         #TODO: Apply random torques as action and update the obstervation
+        # Constants for inertia and damping (these values are just examples)
+        inertia = 1.0
+        damping = 0.1
+
+        # Update angular velocities based on applied torques and physics
+        self.vel0 += (action[0] / inertia) - (damping * self.vel0)
+        self.vel1 += (action[1] / inertia) - (damping * self.vel1)
+
+        # Update joint angles based on new velocities
+        self.joint0 += self.vel0
+        self.joint1 += self.vel1
+
+        # Keep joint angles within a reasonable range
+        self.joint0 = self.joint0 % (2 * np.pi)
+        self.joint1 = self.joint1 % (2 * np.pi)
+
         self.move_base() # Move base to the (x + speed, y position)
         self.move_target() # Move target to the next spot on the sinusoidal path
         obs = self.__get_obs() # Get updated observation
@@ -162,6 +191,10 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
             )
         if self.clock is None and self.render_mode == "human":
             self.clock = pygame.time.Clock()
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                self.close()
+
 
         canvas = pygame.Surface((self.window_size, self.window_size))
         canvas.fill((255, 255, 255))
@@ -170,6 +203,13 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         pygame.draw.circle(canvas, (255,0,0), self.target_position, 5) #Target
         # Now we draw the agent
         pygame.draw.circle(canvas, (0,255,0),self.base_position, 5) #Base joint
+
+        # Calculate arm positions
+        joint1_pos, fingertip_pos = self._calculate_arm_positions()
+
+        # Draw the arm segments
+        pygame.draw.line(canvas, (0, 0, 255), self.base_position, joint1_pos, 2)  # First arm segment
+        pygame.draw.line(canvas, (0, 0, 255), joint1_pos, fingertip_pos, 2)      # Second arm segment
 
         if self.render_mode == "human":
             # The following line copies our drawings from `canvas` to the visible window
