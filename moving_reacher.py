@@ -16,7 +16,7 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
         "render_fps": 20,
     }
 
-    def __init__(self, render_mode, size = 50):
+    def __init__(self, render_mode, size = 100):
         self.window_size = 800 
         
         # We are concerned about the arm pose, target position, and the distance between the tip and target positions
@@ -195,21 +195,27 @@ class MovingReacher(MujocoEnv, utils.EzPickle, gym.Env):
             if event.type==pygame.QUIT:
                 self.close()
 
-
+        if(self.base_position[0]>800):
+            self.reset()
         canvas = pygame.Surface((self.window_size, self.window_size))
-        canvas.fill((255, 255, 255))
+        canvas.fill((255, 250, 205))
 
         # First we draw the target
-        pygame.draw.circle(canvas, (255,0,0), self.target_position, 5) #Target
-        # Now we draw the agent
-        pygame.draw.circle(canvas, (0,255,0),self.base_position, 5) #Base joint
-
+        pygame.draw.circle(canvas, (255,0,0), self.target_position, 12, 4) #Target
+        
         # Calculate arm positions
         joint1_pos, fingertip_pos = self._calculate_arm_positions()
 
         # Draw the arm segments
-        pygame.draw.line(canvas, (0, 0, 255), self.base_position, joint1_pos, 2)  # First arm segment
-        pygame.draw.line(canvas, (0, 0, 255), joint1_pos, fingertip_pos, 2)      # Second arm segment
+        pygame.draw.line(canvas, (220,20,60), self.base_position, joint1_pos, 15)  # First arm segment
+        
+        pygame.draw.line(canvas, (220,20,60), joint1_pos, fingertip_pos, 15)      # Second arm segment
+        
+        pygame.draw.circle(canvas, (0,0,0), joint1_pos, 10)
+        pygame.draw.circle(canvas, (0,0,0),self.base_position, 10) #Base joint
+
+        # Draw fingertip
+        pygame.draw.circle(canvas, (0,0,0), fingertip_pos, 10)
 
         if self.render_mode == "human":
             # The following line copies our drawings from `canvas` to the visible window
