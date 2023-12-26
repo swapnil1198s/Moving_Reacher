@@ -1,6 +1,11 @@
 # Moving Reacher Environment
 
+##The current rendering
 https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/178950f3-b837-4834-b438-6e40a79b5491
+
+##Rendering using Mujoco (not yet integrated into python code)
+https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/92f8ba94-034b-408f-b097-01098b8514c2
+
 
 ## Overview
 The Moving Reacher is a custom reinforcement learning environment built using Pygame and Gymnasium (formerly known as Gym). It simulates a 2D robotic arm (reacher) with two segments, each controlled by applying torques at hinge joints. The environment is designed for experiments with reinforcement learning algorithms, particularly those focusing on continuous control tasks.
