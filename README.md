@@ -1,9 +1,11 @@
 # Moving Reacher Environment
 
-##The current rendering
+## The current rendering  
+
 https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/178950f3-b837-4834-b438-6e40a79b5491
 
-##Rendering using Mujoco (not yet integrated into python code)
+## Rendering using Mujoco (not yet integrated into python code)  
+
 https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/92f8ba94-034b-408f-b097-01098b8514c2
 
 
