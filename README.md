@@ -6,7 +6,7 @@ https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/178950f3-b837-483
 
 ## Rendering using Mujoco (not yet integrated into python code)  
 
-https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/92f8ba94-034b-408f-b097-01098b8514c2
+https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/57b9066b-2da9-4fc2-9040-7c22267f73a9
 
 
 ## Overview
@@ -18,7 +18,11 @@ Customizable Parameters: Arm length, torque limits, and other parameters can be 
 Target Following: The arm aims to reach or follow a moving target, which follows a sinusoidal path.  
 Observation Space: Includes arm position, joint angles, and the target's position.  
 Action Space: Continuous action space representing the torques applied to the arm's joints.  
-Reward Function: Customizable reward function based on the distance between the arm's tip and the target.  
+Reward Function: Customizable reward function based on the distance 
+
+
+
+between the arm's tip and the target.  
 
 ## Dependencies  
 Python 3.x  
