@@ -4,25 +4,31 @@
     <camera name="view_camera" pos="0 0 2" mode="targetbody" target="reacher"/>
     <light name="top" pos="0 0 1"/>
     <body name="reacher" pos="0 0 0">
-       <joint name="base_slider" type="slide" pos="0 0 0" range="-1 1" limited="true" axis="0 1 0"/>
+       <joint name="base_slider" type="slide" pos="0 0 0" range="-2 2" limited="true" axis="-1 0 0"/>
        <geom name="base" pos="0 0 0" size="0.05" rgba="1 0 0 1"/>
       <body name="shoulder_to_elbow" pos="0 0 0">
-        <joint name="joint0" type="hinge" pos="0 0 0" axis="0 0 1" />
+        <joint name="joint0" type="hinge" pos="0 0 0" axis="0 1 0" />
         <geom fromto="0 0 0 0.5 0 0" name="link0" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
         <geom name="green_sphere" pos="0.5 0 0" size=".05" rgba="0 1 0 1"/>
         <body name="elbow_to_tip" pos="0.51 0 0">
-            <joint name="joint1" type="hinge" pos="0 0 0" axis="0 0 1" />
+            <joint name="joint1" type="hinge" pos="0 0 0" axis="0 1 0" />
             <geom fromto="0 0 0 0.5 0 0" name="link1" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
             <geom name="tip" pos="0.5 0 0" size=".05" rgba="0 1 0 1"/>
         </body>
       </body>
       
     </body>
+    <body name="target" pos=".1 -.1 .01">
+			<joint armature="0" axis="1 0 0" damping="0" limited="true" name="target_x" pos="0 0 0" range="-1 1" ref=".1" stiffness="0" type="slide"/>
+			<joint armature="0" axis="0 0 1" damping="0" limited="true" name="target_y" pos="0 0 0" range="-1 1" ref="-.1" stiffness="0" type="slide"/>
+			<geom conaffinity="0" contype="0" name="target" pos="0 0 0" rgba="0.9 0.2 0.2 1" size=".05" type="sphere"/>
+		</body>
   </worldbody>
   <actuator>
         <!-- Actuators for Arm Joints -->
-        <motor ctrllimited="true" ctrlrange="-0.05 0.05" gear="100.0" joint="joint0"/>
-        <motor ctrllimited="true" ctrlrange="-0.05 0.05" gear="100.0" joint="joint1"/>
-        <motor ctrllimited="true" ctrlrange="-0.1 0.1" gear="100.0" joint="base_slider"/>
-    </actuator>
+        <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="joint0"/>
+        <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="joint1"/>
+        <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="base_slider"/>
+  </actuator>
+
 </mujoco>
