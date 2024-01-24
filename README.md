@@ -30,8 +30,12 @@ Action Space: Continuous action space representing the torques applied to the ar
 Reward Function: Customizable reward function based on the distance between the arm's tip and the target.  
 
 ## Dependencies  
-Python 3.x  
+Python 3.x 
+
 mujoco (latest)
+
 Pygame  
+
 Gymnasium 
+
 NumPy  
