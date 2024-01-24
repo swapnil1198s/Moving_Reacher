@@ -10,6 +10,7 @@ https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/a16f18db-2c2b-402
 ## The current rendering  
 ### An example of running the moving reacher using random actions in MuJoCo
 
+### Run using: python moving_reacher_v2,py
 https://github.com/swapnil1198s/Moving_Reacher/assets/46658528/bab66f7a-6a12-4ede-a046-ea08f9c5a9b4
 
 
