@@ -4,17 +4,25 @@
     <camera name="view_camera" pos="0 0 2" mode="targetbody" target="reacher"/>
     <light name="top" pos="0 0 1"/>
     <body name="reacher" pos="0 0 0">
-       <joint name="base_slider" type="slide" pos="0 0 0" range="-2 2" limited="true" axis="-1 0 0"/>
-       <geom name="base" pos="0 0 0" size="0.05" rgba="1 0 0 1"/>
-      <body name="shoulder_to_elbow" pos="0 0 0">
-        <joint name="joint0" type="hinge" pos="0 0 0" axis="0 1 0" />
-        <geom fromto="0 0 0 0.5 0 0" name="link0" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
-        <geom name="green_sphere" pos="0.5 0 0" size=".05" rgba="0 1 0 1"/>
-        <body name="elbow_to_tip" pos="0.51 0 0">
-            <joint name="joint1" type="hinge" pos="0 0 0" axis="0 1 0" />
-            <geom fromto="0 0 0 0.5 0 0" name="link1" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
-            <geom name="tip" pos="0.5 0 0" size=".05" rgba="0 1 0 1"/>
+      <body name="base_slider" pos="0 0 0">
+        <joint name="base_slider" type="slide" pos="0 0 0" range="-2 2" limited="true" axis="-1 0 0"/>
+        <geom name="base" pos="0 0 0" size="0.05" rgba="1 0 0 1"/>
+        <body name="shoulder_pan_joint" pos="0 0 0">
+          <geom name="pan_joint_base" type="capsule" fromto="-0.4 0 0 0.4 0 0" size="0.05" contype="1" conaffinity="1" />
+          <joint name="base_pan_joint" type="hinge" pos="0 0 0" axis="0 0 1" damping="1.0" />
+          <body name="shoulder_to_elbow" pos="0 0 0.1">
+            <geom name="shoulder" pos="0 0 0" size="0.05" rgba="1 0 0 1"/>
+            <joint name="joint0" type="hinge" pos="0 0 0" range="-90 90" axis="0 1 0" />
+            <geom fromto="0 0 0 0 0 0.5" name="link0" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
+            <geom name="green_sphere" pos="0 0 0.5" size=".05" rgba="0 1 0 1"/>
+            <body name="tip" pos="0 0 0.51">
+                <joint name="joint1" type="hinge" pos="0 0 0" range="-170 170" axis="0 1 0" />
+                <geom fromto="0 0 0 0 0 0.5" name="link1" rgba="0.0 0.4 0.6 1" size=".04" type="capsule"/>
+                <geom name="tip" pos="0 0 0.5" size=".05" rgba="0 1 0 1"/>
+            </body>
+          </body>
         </body>
+        
       </body>
       
     </body>
@@ -26,9 +34,10 @@
   </worldbody>
   <actuator>
         <!-- Actuators for Arm Joints -->
-        <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="joint0"/>
+        <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="200.0" joint="joint0"/>
         <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="joint1"/>
         <motor ctrllimited="true" ctrlrange="-0.2 0.2" gear="100.0" joint="base_slider"/>
+        <motor joint="base_pan_joint" ctrlrange="-2.0 2.0" ctrllimited="true" />
   </actuator>
 
 </mujoco>
